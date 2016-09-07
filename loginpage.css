@@ -1,0 +1,35 @@
+.dashboard
+	{ 
+		text-decoration-color: wavy white;
+		text-align: center;
+		background-color: #FF4500;
+		height: 15%;
+	}
+.floatingleft
+{
+	float:left;
+	width:30%;
+	height:80%;
+	
+	margin-top:2%;
+	border:2px solid black;
+}
+
+.floatingright
+{
+	float:center;
+	margin-left: 70%;
+	width:30%;
+	height:80%;
+	border:2px solid black;
+	margin-top:2%;
+}
+.button
+{
+	color:#000000;
+	opacity:0.8;
+}
+.form
+{
+	display: inline-block;
+}
