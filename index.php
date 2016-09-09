@@ -1,48 +1,43 @@
-
+<!DOCTYPE html>
 <html>
-<style>
-[input=name],[input=password]
-{
-	margin-top: 0%;
-	display: inline-block;
-}
-.floating
-{
-	position: relative;
-	float:left;
-	width:30%;
-	height: 40%;
-	margin: 8%;
-	border:#000000 solid;
-
-}
-.header
-{
+<head>
+	<title>Home</title>
 	
-	width: 100%;
-	height: 20%;
-	background-color: green;
-	color:white;
-}
-.line
-{	
-	margin-left:45%;
-	border-left: solid #000000;
-	height: 60%;
-}
-</style>
+	
+	<link rel="stylesheet" type="text/css" href="screen.css"/>
+</head>
 <body>
-	<pre>
-		<div class="header">
-<h1 style="text-align:center">Login Page</h1></div>
-<div class="floating">
-	<form action="welcome.php" method="post">
-	Username :<input type="text" name="name" placeholder="Student_No or Faculty_No"><br>
-	Password :<input type="password" name="password" placeholder="Password"><br><?php session_start(); $msg=""; echo $msg ?>
-</form>
-	<button type="button"style="color:#000000;opacity:0.8;">Forget Password</button><br>
-   	<button type="button"style="color:#000000;opacity:0.8;">Login</button>	<a href="register.php"><button type="button" style="color:#000000;opacity:0.8;">New User ? Sign Up</button></a>
-</div><div class="floating"><p><b>Alert! Notice</p><b></div>
-<div class="line"></div>
+
+<div id="header">
+	<img src="banner.png" name="logo" alt="Library" style="width: 100%; height: 250px;" />
+	
+	<p id="layoutdims"><h1 style="text-align: center">Welcome to Online Library Management System</h1></p>
+</div>
+<div class="colmask threecol">
+	<div class="colmid">
+		<div class="colleft">
+			<div class="col1">
+				<img src="library.jpg" width="100%" />
+			</div>
+			<div class="col2">
+				
+					<br><br><br>
+					<a href="registration.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>New Registration</b></a><br><br>
+					<a href="admin_login.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Admin Login</b></a><br><br>
+					<a href="student_login.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Student Login</b></a><br><br>
+					<a href="faculty_login.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Faculty Login</b></a>
+				
+			</div>
+		
+		</div>
+	</div>
+</div>
+<div id="footer">
+	<p>&copy; Online Library Portal</p>
+	<p><a href="#">Mayur Pathak, Nakshatra Pradhan & Akshat Srivastava</a></p>
+	
+	
+</div>
+
 </body>
 </html>
