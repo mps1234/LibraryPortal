@@ -2,9 +2,8 @@
 <html>
 <head>
 	<title>Add books</title>
-	
-	
 	<link rel="stylesheet" type="text/css" href="screen.css">
+	<link rel="stylesheet" type="text/css" href="tablestyle.css">
 </head>
 <body>
 

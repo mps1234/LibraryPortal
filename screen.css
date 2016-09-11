@@ -201,3 +201,11 @@ form{
 	padding:1px;
 	width: 100%;
 }
+
+.tab1{
+	border-collapse: collapse;
+	margin: 5%;
+	padding: 5%;
+	align: center;
+
+}

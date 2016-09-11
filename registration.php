@@ -16,14 +16,14 @@
 			<div class="colmid">
 				<div class="colleft">
 					<div class="col1">
-						<img src="library.jpg" width="100%">
+						<img src="library.jpg" style="width: 100%">
 					</div>
-					
+
 			<div class="col2">
 					<br><br><br>
 					<a href="check.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Admin Registration</b></a><br><br>
 
-					<a href="member_reg.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Student Registration</b></a><br><br>
+					<a href="student_reg.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Student Registration</b></a><br><br>
 
 					<a href="faculty_reg.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Faculty Registration</b></a><br><br>
 					

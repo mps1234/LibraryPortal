@@ -2,29 +2,22 @@
 <html>
 <head>
 	<title>Admin Register</title>
-	
-	
 	<link rel="stylesheet" type="text/css" href="screen.css">
 </head>
+
 <body>
-
-<div id="header">
-	<img src="logo.png" name="logo" style="width: 100%; height: 150px;" />
+		<div id="header">
+			<img src="logo.png" name="logo" style="width: 100%; height: 150px;" />
+			<p id="layoutdims"><h1 style="text-align: center">Welcome to Online Library Management System</h1></p>
+		</div>
+			<div class="colmask threecol">
+				<div class="colmid">
+					<div class="colleft">
+						<div class="col1">
+						<h1 style="text-align: center; color: #369;"> ADMIN REGISTRATION</h1><br><br>
+							<form name="form1" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 	
-	<p id="layoutdims"><h1 style="text-align: center">Welcome to Online Library Management System</h1></p>
-</div>
-<div class="colmask threecol">
-	<div class="colmid">
-		<div class="colleft">
-			<div class="col1">
-							
-				<h1 style="text-align: center; color: #369;"> ADMIN REGISTRATION</h1><br><br>
-<form name="form1" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-	<table style="width: 300; border:0; align:center;">
-
-
-
-
+							<table style="width: 300; border:0; align:center;">
 
 			<tr>
 				<td>Name :</td>
@@ -54,12 +47,12 @@
 
 
 		<tr>
-
 			<td><input type="submit" name="submit" value="Create"><a href=""></td>
 			<td><input type="submit" name="reset" value="Reset"><a href=""></td>
+		</tr>
 
 		</table>
-	</td>
+	
 </form>
 
 <?php
@@ -104,22 +97,12 @@ if(!empty($_POST['name']) && !empty($_POST['pass']) ) {
 }
 ?>
 
-
-
-
-
-
-</tr>
-</table>
 <br><br><br><br><br><br><br>	
-				
-				
+
 				
 			</div>
 			<div class="col2">
-				
-					<br><a href="admin_login.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Admin Login</b><br>
-				
+				<br><a href="admin_login.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Admin Login</b><br>
 			</div>
 			
 		</div>
@@ -128,7 +111,6 @@ if(!empty($_POST['name']) && !empty($_POST['pass']) ) {
 <div id="footer">
 	<p>&copy; Online Library Portal</p>
 	<p><a href="#">Mayur Pathak, Nakshatra Pradhan & Akshat Srivastava</a></p>
-	
 	
 </div>
 

@@ -2,22 +2,19 @@
 <html>
 <head>
 	<title>Home</title>
-	
-	
-	<link rel="stylesheet" type="text/css" href="screen.css"/>
+	<link rel="stylesheet" type="text/css" href="screen.css">
 </head>
 <body>
 
 <div id="header">
 	<img src="banner.png" name="logo" alt="Library" style="width: 100%; height: 250px;" />
-	
 	<p id="layoutdims"><h1 style="text-align: center">Welcome to Online Library Management System</h1></p>
 </div>
 <div class="colmask threecol">
 	<div class="colmid">
 		<div class="colleft">
 			<div class="col1">
-				<img src="library.jpg" width="100%" />
+				<img src="library.jpg" style="width: 100%" />
 			</div>
 			<div class="col2">
 				
@@ -26,9 +23,9 @@
 
 					<a href="admin_login.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Admin Login</b></a><br><br>
 
-					<a href="member_login.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Student Login</b>
+					<a href="student_login.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Student Login</b>
 					</a><br><br>
-					
+
 					<a href="faculty_login.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Faculty Login</b></a>
 				
 			</div>
