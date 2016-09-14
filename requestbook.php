@@ -1,14 +1,16 @@
+
 <?php 
 session_start();
 if(!isset($_SESSION["sess_user"])){
-	header("location:student_login.php");
+	header("Location:faculty_login.php");
 } else 
 {
 ?>
 <html>
 <head>
 	<title>View Book</title>
-	<link rel="stylesheet" type="text/css" href="screen.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="screen.css" />
+	
 </head>
 <body>
 
@@ -28,10 +30,8 @@ if(!isset($_SESSION["sess_user"])){
 	$con=mysql_connect('localhost','root','') or die(mysql_error());
 	mysql_select_db('libraryportal') or die("cannot select DB");
 	$mid=$_SESSION['mid'];
-	$result=mysql_query("SELECT * FROM book where Bid='123'");
-	$available="";
-	$bid="";
-	$bname="";
+	$result=mysql_query("SELECT * FROM book WHERE Bid='$_GET[bid]'");
+	$available=$bid=$bname="";
 	while($row=mysql_fetch_assoc($result))
 	{
 	$available=$row['Availability'];
@@ -46,6 +46,7 @@ if(!isset($_SESSION["sess_user"])){
 		$mname=$row['name'];
 	
 	}
+	//check book availability and no of books issued by member
 	$query2=mysql_query("SELECT * FROM facultydetails WHERE facultyNo='$mid'");
 	while($row=mysql_fetch_assoc($query2))
 	{
@@ -62,11 +63,14 @@ if(!isset($_SESSION["sess_user"])){
 	}
     else			   
 	{
-	$sql="INSERT INTO requestbook(facultyNo,name,Bid,Bname,requestdate) VALUES('$mid','$mname','$bid','$bname',now())";
+	$sql="INSERT INTO requestbook(Mid,Name,Bid,Bname,requestdate) VALUES('$mid','$mname','$bid','$bname',now())";
 	$result=mysql_query($sql);
 	if($result)
 	{
 		echo "Request sent";
+		echo " Redirecting in 4 sec";
+ 		header('Refresh: 4; URL=viewbook.php');
+
 	}
     }
 ?>
@@ -98,4 +102,4 @@ if(!isset($_SESSION["sess_user"])){
 </html>
 <?php
 }
-?> 
+?>

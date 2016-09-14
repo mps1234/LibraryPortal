@@ -7,19 +7,39 @@ if(!isset($_SESSION["sess_user"]))
 ?>
 <html>
 <link rel="stylesheet" type="text/css" href="screen.css" media="screen"/>
-<article>
-	<header class="dashboard">
-		<font size="18" color="white">Search By Genre Name</font>
-	</header>
-</article>
+<body>
+<div id="header">
+	<img src="banner.png" name="logo"  class="mySlides" style="width: 100%; height: 250px;">
+	<img src="library1.jpg" name="logo"  class="mySlides" style="width: 100%; height: 250px;">
+	<img src="library2.jpg" name="logo"  class="mySlides" style="width: 100%; height: 250px;">
+	<img src="library3.jpg" name="logo"  class="mySlides" style="width: 100%; height: 250px;"/>
+	<script>
+	var myIndex = 0;
+	carousel();
+
+	function carousel()
+	{
+    	var i;
+    	var x = document.getElementsByClassName("mySlides");
+    	for (i = 0; i < x.length; i++)
+    	{
+    		x[i].style.display = "none";
+    	}
+    	myIndex++;
+    	if (myIndex > x.length)
+    	{myIndex = 1}
+    	x[myIndex-1].style.display = "block";
+    	setTimeout(carousel, 4000); 
+	}
+</script>
+
 <div class="vertical">
 <h2><a href="logout.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; ">Logout</a></h2><br>
 <h2><a href="faculty.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; ">Home</a></h2><br></div>
-<body>
+
 <pre>
 <form action="" method="post" class="form"><pre>
-Genre :<input type="text" name="Genre" placeholder="Genre">
-<button type="text" name="submit">Submit</button>
+Genre :<input type="text" name="Genre" placeholder="Genre">	<button type="text" name="submit">Submit</button>
 <?php
 if(isset($_POST["submit"]))
 {

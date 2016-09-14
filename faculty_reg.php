@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>student registration</title>
+	<title>faculty registration</title>
 	
 	
 	<link rel="stylesheet" type="text/css" href="screen.css" media="screen" />
@@ -10,8 +10,118 @@
 
 <div id="header">
 	<img src="logo.png" name="logo" align="middle" />
+	<?php
+	$nameEr=$passwordEr=$addressEr=$emailEr=$departmentEr="";
+	$name=$password=$department=$email="";
+	$faculty_no=$contact_no=$year=$address="";
+	$contact_noEr=$faculty_noEr=$yearEr="";
+	if($_SERVER["REQUEST_METHOD"]=="POST")
+	{
+		if(empty($_POST["name"]))
+		{
+			$nameEr="Name Required";
+		}
+		else
+		{
+			$name=input($_POST['name']);
+			if (!preg_match("/^[a-zA-Z ]*$/",$name))
+			{
+			    $nameErr = "Only letters and white space allowed"; 
+			}
+		}
+		if(empty($_POST["department"]))
+		{
+			$departmentEr="Department Required";
 	
-	<p id="layoutdims"><marquee>Welcome to Online Library Management System</marquee></p>
+		}
+		else
+		{
+			$department=$_POST['department'];
+		}
+		if(empty($_POST["year"]))
+		{
+			$yearEr="Year Required";
+		}
+		else
+		{
+			$year=$_POST['year'];
+			if($year>4||$year<0)
+			{
+				$yearEr="Invalid Year";
+			}
+		}
+		if(empty($_POST["address"]))
+		{
+			$addressEr="Address Required";
+		}
+		else
+		{
+			$address=$_POST['address'];
+		}
+		if(empty($_POST["password"]))
+		{
+			$passwordEr="Password Required";
+		}
+		else
+		{
+			$password=$_POST['password'];
+		}
+		if(empty($_POST["mid"]))
+		{
+			$faculty_noEr="Enter Faculty Number";
+		}
+		else
+		{
+			$faculty_no=$_POST['mid'];
+		}
+		if(empty($_POST["contactno"]))
+		{
+			$contact_noEr="Contact Required";
+		}
+		else
+		{
+			$contact_no=$_POST['contactno'];
+		}
+		if(empty($_POST["email"]))
+		{
+			$emailEr="Cannot Left Blank";
+		}
+		else
+		{
+			$email=$_POST['email'];
+			if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+			{
+     			$emailEr = "Invalid email format"; 
+    		}
+		}
+		if($nameEr==""&&$passwordEr==""&&$addressEr==""&&$emailEr==""&&$departmentEr==""&&$contact_noEr==""&&$faculty_noEr==""&&$yearEr=="")
+		{
+		
+			$conn = mysqli_connect("localhost","root","","libraryportal")or die(mysql_error());
+			$sql = "INSERT INTO facultydetails(name,password,department,year,email,faculty_id,contact,address) VALUES('$name','$password','$department','$year','$email','$faculty_no','$contact_no','$address')";
+			if(mysqli_query($conn,$sql))
+		{
+			
+			header("location:index.php");
+		}
+		else
+			echo "Error".mysqli_error($conn);
+			
+		}
+
+			
+		}
+		function input($data)
+		{
+			$data=trim($data);
+			$data=stripslashes($data);
+			$data=htmlspecialchars($data);
+			return $data;
+		}
+		?>
+
+	
+	<h1 id="layoutdims">Welcome to Online Library Management System</h1>
 </div>
 <div class="colmask threecol">
 	<div class="colmid">
@@ -22,50 +132,53 @@
 				<h1 align="center" > <font color="#369">FACULTY REGISTRATI0N</font></h1><br><br>
 	<table width="300" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#CCCCCC">
 <tr>
+
 <form name="form1" method="post" action="">
+
 <td>
-<table width="100%" border="0" cellpadding="3" cellspacing="1" bgcolor="#FFFFFF" >
+<table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#FFFFFF" >
+<p><span class="error">* required field</span></p>
 
 
 <tr>
 <td width="78"><B>Name</B></td>
 <td width="6">:</td>
-<td width="294"><input name="name" type="text" placeholder="Name"></td>
+<td width="294"><input name="name" type="text" placeholder="Name"><span class="error">*<?php echo $nameEr;?></span></td>
 </tr>
 <tr>
 <td width="78"><B>Faculty no</B></td>
 <td width="6">:</td>
-<td width="294"><input name="mid" type="text" placeholder="Faculty Number"></td>
+<td width="294"><input name="mid" type="text" placeholder="Faculty Number"><span class="error">*<?php echo $faculty_noEr;?></span></td>
 </tr>
 <tr>
 <td width="78"><B>Email</B></td>
 <td width="6">:</td>
-<td width="294"><input name="email" type="email" placeholder="Email Address"></td>
+<td width="294"><input name="email" type="email" placeholder="Email Address"><span class="error">*<?php echo $emailEr;?></span></td>
 </tr>
 <tr>
 <td><B>Password</B></td>
 <td>:</td>
-<td><input name="pass" type="password" placeholder="Password"></td>
+<td><input name="password" type="password" placeholder="Password"><span class="error">*<?php echo $passwordEr;?></td>
 </tr>
 <tr>
 <td><B>Department</B></td>
 <td>:</td>
-<td><input name="department" type="text" placeholder="Department"></td>
+<td><input name="department" type="text" placeholder="Department"><span class="error">*<?php echo $departmentEr;?></span></td>
 </tr>
 <tr>
 <td><B>Year</B></td>
 <td>:</td>
-<td><input name="year" type="text" placeholder="Year"></td>
+<td><input name="year" type="text" placeholder="Year"><span class="error">*<?php echo $yearEr;?><br></span></td>
 </tr>
 <tr>
 <td width="78"><B>Contact no</B></td>
 <td width="6">:</td>
-<td width="294"><input name="contactno" type="tel" placeholder="Contact Number"></td>
+<td width="294"><input name="contactno" type="tel" placeholder="Contact Number"><span class="error">*<?php echo $contact_noEr; ?></span></td>
 </tr>
 <tr>
 <td width="78"><B>Address</B></td>
 <td width="6">:</td>
-<td width="294"><textarea rows="4" cols="22" name="address" placeholder="Address" ></textarea></td>
+<td width="294"><input rows="4" cols="22" name="address" placeholder="Address" ><span class="error">*<?php echo $addressEr;?><br></span></input></td>
 </tr>
 <tr>
 <td>&nbsp;</td>
@@ -79,50 +192,6 @@
 </table>
 </td>
 </form>
-<?php
-if(isset($_POST["submit"])){
-
-if(!empty($_POST['name']) && !empty($_POST['pass']) && !empty($_POST['mid']) && !empty($_POST['email']) && !empty($_POST['department']) && !empty($_POST['year'])&& !empty($_POST['contactno']) && !empty($_POST['address'])) 
-{
-	$name=$_POST['name'];
-	$mid=$_POST['mid'];
-	$email=$_POST['email'];
-	$pass=$_POST['pass'];
-	$department=$_POST['department'];
-	$year=$_POST['year'];
-	$contact=$_POST['contactno'];
-	$address=$_POST['address'];
-	
-
-	$con=mysql_connect('localhost','root','') or die(mysql_error());
-	mysql_select_db('libraryportal') or die("cannot select DB");
-
-	$query=mysql_query("SELECT * FROM facultydetails WHERE facultyNo='".$mid."'");
-	$numrows=mysql_num_rows($query);
-	if($numrows==0)
-	{
-		$sql="INSERT INTO facultydetails(name,facultyNo,email,password,department,year,contactNo,address) VALUES('$name','$mid','$email','$pass','$department','$year','$contact','$address')";
-
-		$result=mysql_query($sql);
-		if($result){
-	
-		echo "Account Successfully Created";
-		header("Location: faculty_login.php");
-		}
-		else
-		{
-		echo "Failure!";
-		}
-	}
-	else {
-		echo "That username already exists! Please try again with another.";
-	}
-
-} else {
-	echo "All fields are required!";
-}
-}
-?>
 
 
 </tr>
@@ -132,9 +201,9 @@ if(!empty($_POST['name']) && !empty($_POST['pass']) && !empty($_POST['mid']) && 
 				<!-- Column 1 end -->
 			</div>
 			<div class="col2">
-				<!-- Column 2 start -->
+			<br><br><br>
+			<h2><a href="index.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; ">Index Page</a></h2><br>
 					
-				<!-- Column 2 end -->
 			</div>
 			<div class="col3">
 				<!-- Column 3 start -->
@@ -149,7 +218,8 @@ if(!empty($_POST['name']) && !empty($_POST['pass']) && !empty($_POST['mid']) && 
 	</div>
 </div>
 <div id="footer">
-	
+	<p>&copy; Online Library Portal</p>
+	<p><a href="#">Mayur Pathak, Nakshatra Pradhan & Akshat Srivastava</a></p>
 	
 	
 </div>

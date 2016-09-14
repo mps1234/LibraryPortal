@@ -7,56 +7,49 @@ if(!isset($_SESSION["sess_user"]))
 ?>
 <html>
 <head>
+	<link rel="stylesheet" type="text/css" href="screen.css" media="screen" />
+
 <title>Book Recommendation And Research Paper</title>
 </head>
-<style>
-ul {
-    margin: 0;
-    padding: 0;
-    width: 15%;
-    border:1px solid black;
-    background-color: #FF8A33;
-}
-li a {
-    display:block;
-    color: #000;
-    padding: 4% 9%;
-    border:1px solid black;
- 
-}
 
-li a:hover {
-    background-color: #555;
-    border-bottom:1px solid yellow;
-    color: white;
-}
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
+<body style="background-color:#E6E6FA">
+<div id="header">
+	<img src="banner.png" name="logo"  class="mySlides" style="width: 100%; height: 250px;">
+	<img src="library1.jpg" name="logo"  class="mySlides" style="width: 100%; height: 250px;">
+	<img src="library2.jpg" name="logo"  class="mySlides" style="width: 100%; height: 250px;">
+	<img src="library3.jpg" name="logo"  class="mySlides" style="width: 100%; height: 250px;"/>
+	<script>
+	var myIndex = 0;
+	carousel();
 
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 2%;
-}
+	function carousel()
+	{
+    	var i;
+    	var x = document.getElementsByClassName("mySlides");
+    	for (i = 0; i < x.length; i++)
+    	{
+    		x[i].style.display = "none";
+    	}
+    	myIndex++;
+    	if (myIndex > x.length)
+    	{myIndex = 1}
+    	x[myIndex-1].style.display = "block";
+    	setTimeout(carousel, 4000); 
+	}
+</script>
 
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
 
-</style>
-<body>
+
 <div style="background-color:#3377FF;text-align:center;">
-	<font size="18" color="white">Welcome <?php echo $_SESSION['sess_user']; ?></font><hr style="border:1px solid black;"></div>
+	<font size="14" color="white">Welcome <?php echo $_SESSION['sess_user']; ?></font><hr style="border:1px solid black;"></div>
 <ul>
   <li><a href="faculty.php">Home</a></li>
-  <li><a href="faculty_details.php">Personal Details</a></li>
+  <li><a href="faculty_details.php">Details</a></li>
    <li><a href="logout.php">Logout</a></li>
 </ul>
-<h1>Available Books</h1>
-<div style="float:left;width:45%;height:60%;border:1px solid black;margin:auto;overflow:scroll;margin-top:0%;">
+<h1 style="color:#000;">Available Books</h1>
+<div style="float:left;width:45%;height:60%;border:1px solid black;overflow:scroll;margin-top:2%;background-color:#F4A460;">
+
 <?php
 	$con=mysql_connect('localhost','root','') or die(mysql_error());
 	mysql_select_db('libraryportal') or die("cannot select DB");
@@ -80,7 +73,6 @@ tr:nth-child(even) {
 	<td><?php echo $row['Subject'];?></td>
 	<td><?php echo $row['Subject'];?></td>
 	</tr>
-	<td colspan="2" align="center">Edit Details</td>
 	<?php $_SESSION['count']+=1;
 	?>
 	</table>
@@ -93,10 +85,13 @@ tr:nth-child(even) {
  }
  ?>
  </div>
- <div style="float:right;width:40%;height:8%;border:1px solid black;margin:auto;display:block;background-color:#f1f1f1">
+ <div style="float:right;width:40%;height:15%;background-color:#C0C0C0">
 <pre>
-<form action="" method="post" class="form"><pre>
-	Upload Link:<input type="text" name="Upload" placeholder="Links">	<button type="text" name="submit">Upload</button>
+<form action="uploadfile.php" method="post" enctype="multipart/form-data">
+<input type="file" name="file" size="50" />	<input type="submit" value="Upload" />
+	</form>
+
+
 </div>
 </body>
 </html>
