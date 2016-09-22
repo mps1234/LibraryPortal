@@ -1,13 +1,26 @@
-<!DOCTYPE html>
+<?php 
+session_start();
+if(isset($_SESSION["sess_user"])){
+	header("location:faculty/faculty.php");
+}
+else if(isset($_SESSION["sess_user_s"])){
+	header("location:student/student.php");
+}
+else if(isset($_SESSION["sess_user_a"])){
+	header("location:admin_login.php");
+}
+else
+{ 
+?><!DOCTYPE html>
 <html>
 <head>
 	<title>Admin Register</title>
-	<link rel="stylesheet" type="text/css" href="screen.css"/>
+	<link rel="stylesheet" type="text/css" href="screen.css">
 </head>
 
 <body>
 	<div id="header">
-	<img src="logo.png" name="logo" style="width: 100%; height: 150px;"/>
+	<img src="logo.png" name="logo" style="width: 100%; height: 150px;">
 	<p id="layoutdims"><h1 style="text-align: center">Welcome to Online Library Management System</h1></p>
 </div>
 
@@ -51,6 +64,11 @@
 				<br><br><br><br><br>
 				
 			</div>
+			<div class="col2">
+				<br><br>
+					<a href="registration.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Back</b></a><br><br>
+
+			</div>
 			
 			
 		</div>
@@ -64,3 +82,4 @@
 
 </body>
 </html>
+<?php } ?>

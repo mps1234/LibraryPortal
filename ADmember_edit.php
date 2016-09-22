@@ -1,9 +1,24 @@
+<?php 
+session_start();
+if(isset($_SESSION["sess_user"])){
+	header("location:faculty/faculty.php");
+}
+else if(isset($_SESSION["sess_user_s"])){
+	header("location:student/student.php");
+}
+else if(!isset($_SESSION["sess_user_a"])){
+	header("location:admin_login.php");
+}
+else
+{ 
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Edit Member</title>
 	<link rel="stylesheet" type="text/css" href="screen.css">
 	<link rel="stylesheet" type="text/css" href="tablestyle.css">
+	<link rel="stylesheet" type="text/css" href="screen5.css">
 </head>
 <body>
 
@@ -25,13 +40,11 @@
 					$user = "root";
  					$password = "";
  					$database = "library"; 
- 					mysql_connect($server,$user,$password)
- 					or die ("Connection Fails"); 
- 					mysql_select_db($database) or die ("Database Not Found");
+ 					
+	$con=mysqli_connect("localhost","root","","library");
  
- 
- 					$data = mysql_query("SELECT * FROM member WHERE Mid='$_GET[mid]'");
- 					$r=mysql_fetch_array($data);
+ 					$data = mysqli_query($con,"SELECT * FROM member WHERE Mid='$_GET[mid]'");
+ 					$r=mysqli_fetch_array($data);
   
  echo "<h2 style='text-align:center;'>Edit Account</h2><hr> 
  <form method='POST' action='ADupdate_member.php'> 
@@ -93,3 +106,4 @@
 
 </body>
 </html>
+<?php } ?>

@@ -1,4 +1,17 @@
-<html>
+<?php 
+session_start();
+if(isset($_SESSION["sess_user"])){
+	header("location:faculty/faculty.php");
+}
+else if(isset($_SESSION["sess_user_s"])){
+	header("location:student/student.php");
+}
+else if(!isset($_SESSION["sess_user_a"])){
+	header("location:admin_login.php");
+}
+else
+{ 
+?><html>
 <head>
 	<title>Issue Book</title>
 	<link rel="stylesheet" type="text/css" href="screen.css">
@@ -24,22 +37,20 @@
 	$user = "root";
 	$password = "";
 	$database = "library"; 
-	mysql_connect($server,$user,$password)
-	or die ("Connection Fails"); 
-	mysql_select_db($database) or die ("Database Not Found");
-  
+	
+	$con=mysqli_connect("localhost","root","","library");
 	//check for request expiry  
 	
-	$data = mysql_query("SELECT * FROM requestbook");
+	$data = mysqli_query($con,"SELECT * FROM requestbook");
 	
-	while ($r=mysql_fetch_array($data))
+	while ($r=mysqli_fetch_array($data))
 	{
 		$requestdate=new DateTime($r['requestdate']);
 		$viewrequestdate=new DateTime(date('Y-m-d'));
 		$diff=date_diff($requestdate,$viewrequestdate);
 		$days=$diff->d;
-		$sql=mysql_query("Update requestbook set requestexpirydays='$days'");
-		$sql1=mysql_query("Delete from requestbook where requestexpirydays>0");
+		$sql=mysqli_query($con,"Update requestbook set requestexpirydays='$days'");
+		$sql1=mysqli_query($con,"Delete from requestbook where requestexpirydays>0");
 	}
 	
  
@@ -48,7 +59,7 @@
  
  //display requestbook table
 	
- $data = mysql_query("SELECT * FROM requestbook"); 
+ $data = mysqli_query($con,"SELECT * FROM requestbook"); 
 
    echo "<table class='tab1' border='1' align='center'> 
   		<th>Request ID</th>
@@ -60,7 +71,7 @@
 		<th>Action</th>";
  
 
- 	while ($r=mysql_fetch_array($data))
+ 	while ($r=mysqli_fetch_array($data))
  		{ 
  		echo "<tr>
  		<td>$r[Request_id]</td> 
@@ -109,3 +120,4 @@
 
 </body>
 </html>
+<?php } ?>

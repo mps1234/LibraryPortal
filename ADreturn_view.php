@@ -1,4 +1,17 @@
-
+<?php 
+session_start();
+if(isset($_SESSION["sess_user"])){
+	header("location:faculty/faculty.php");
+}
+else if(isset($_SESSION["sess_user_s"])){
+	header("location:student/student.php");
+}
+else if(!isset($_SESSION["sess_user_a"])){
+	header("location:admin_login.php");
+}
+else
+{ 
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,10 +38,9 @@
 		$user = "root";
  		$password = "";
  		$database = "library"; 
- 		mysql_connect($server,$user,$password)
- 		or die ("Connection Fails"); 
- 		mysql_select_db($database) or die ("Database Not Found");
- 		$data = mysql_query("SELECT * FROM claimreturn"); 
+ 		
+	$con=mysqli_connect("localhost","root","","library");
+ 		$data = mysqli_query($con,"SELECT * FROM claimreturn"); 
    			echo "<table border='1' align='center'> 
   			<th>Return claimID</th>
   			<th>Issue Id</th>
@@ -40,7 +52,7 @@
 			 <th>Action</th>";
  	 	
  	 		$no=1;
- 			while ($r=mysql_fetch_array($data))
+ 			while ($r=mysqli_fetch_array($data))
  				{ 
  					echo "<tr>
  					<td>$r[claim_return_id]</td> 
@@ -89,3 +101,4 @@
 
 </body>
 </html>
+<?php } ?>

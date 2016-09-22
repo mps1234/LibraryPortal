@@ -1,4 +1,17 @@
-<!DOCTYPE html>
+<?php 
+session_start();
+if(isset($_SESSION["sess_user"])){
+	header("location:faculty/faculty.php");
+}
+else if(isset($_SESSION["sess_user_s"])){
+	header("location:student/student.php");
+}
+else if(!isset($_SESSION["sess_user_a"])){
+	header("location:admin_login.php");
+}
+else
+{ 
+?><!DOCTYPE html>
 <html>
 <head>
 	<title>Admin Fine</title>
@@ -27,26 +40,26 @@
 	$user = "root";
 	$password = "";
 	$database = "library"; 
-	mysql_connect($server,$user,$password)
-	or die ("Connection Fails"); 
-	mysql_select_db($database) or die ("Database Not Found");
-	echo "<table border='1' align='center'> 
+	
+	$con=mysqli_connect("localhost","root","","library");
+	echo "<table border='1'> 
  <th>Issue_id </th>
  <th>Return_id </th>
  <th>Bid</th> 
  <th>Mid</th>
  <th>Name</th>
- <th>Issue_date</th>
  <th>Return_date</th>
+ <th>Issue_date</th>
  <th>diff</th>
  <th>Amount</th>";
 
 
-$result=mysql_query("SELECT * FROM returnstore where diff>0");
+$result=mysqli_query($con,"SELECT * FROM returnstore where diff>0");
 
 $no=1;
+
 	
-	while ($row=mysql_fetch_array($result))
+	while ($row=mysqli_fetch_array($result))
 	{
     $return_id=$row['Return_id'];
 	$issue_id=$row['Issue_id'];
@@ -110,3 +123,4 @@ echo" <tr>
 
 </body>
 </html>
+<?php } ?>

@@ -1,10 +1,52 @@
+<?php 
+session_start();
+if(isset($_SESSION["sess_user"])){
+	header("location:faculty/faculty.php");
+}
+else if(isset($_SESSION["sess_user_s"])){
+	header("location:student/student.php");
+}
+else if(!isset($_SESSION["sess_user_a"])){
+	header("location:admin_login.php");
+}
+else
+{ 
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Add books</title>
 	<link rel="stylesheet" type="text/css" href="screen.css">
 	<link rel="stylesheet" type="text/css" href="tablestyle.css">
+	<link rel="stylesheet" type="text/css" href="screen5.css">
 </head>
+<style>
+.alert {
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+}
+.alert2 {
+    padding: 20px;
+    background-color: red;
+    color: white;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
+</style>
 <body>
 
 		<div id="header">
@@ -44,8 +86,18 @@
 			</tr>
 
 			<tr>
-				<td>Availability (Yes or No)</td>
-				<td><input name="availability" type="text" class="textInput" ></td>
+				<td>No. of Books :</td>
+				<td><input name="noofbooks" type="number" class="textInput"></td>
+			</tr>
+
+			<tr>
+				<td>Availability :</td>
+				<td>
+					<select name="availability">
+    				<option value="yes">Yes</option>
+    				<option value="no">No</option>
+    				</select>
+    			</td>
 			</tr>
 
 			<tr>
@@ -68,22 +120,26 @@ if(!empty($_POST['bname']) && !empty($_POST['bid']) )
 	$author=$_POST['author'];
 	$availability=$_POST['availability'];
 	$bid=$_POST['bid'];
+	$noofbooks=$_POST['noofbooks'];
 	
 
-	$con=mysql_connect('localhost','root','') or die(mysql_error());
-	mysql_select_db('library') or die("cannot select DB");
+	
+	$con=mysqli_connect("localhost","root","","library");
 
-	$query=mysql_query("SELECT * FROM book WHERE Bid='".$bid."'");
-	$numrows=mysql_num_rows($query);
+	$query=mysqli_query($con,"SELECT * FROM book WHERE Bid='".$bid."'");
+	$numrows=mysqli_num_rows($query);
 		if($numrows==0)
 		{
-			$sql="INSERT INTO book(Bid,Bname,Subject,Author,Availability) VALUES('$bid','$bname','$subject','$author','$availability')";
+			$sql="INSERT INTO book(Bid,Bname,Subject,Author,No_of_books,Availability) VALUES('$bid','$bname','$subject','$author','$noofbooks','$availability')";
 
-			$result=mysql_query($sql);
+			$result=mysqli_query($con,$sql);
 
 
 			if($result){
-			echo "Book Successfully Added";
+			echo "<div class='alert' style='text-align:center;'>
+  <span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span> 
+  <strong> Book Successfully Added</strong> 
+</div>";
 			} else {
 			echo "Failure!";
 			}
@@ -91,11 +147,15 @@ if(!empty($_POST['bname']) && !empty($_POST['bid']) )
 		} 
 			
 		else {
-			echo "That book already exists! Please try again with another.";
+			echo "<div class='alert2' style='text-align:center;'>
+  <span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span> 
+  That book already exists! Please try again with another. 
+</div>";
 		}
 
 	} else {
-	echo "All fields are required!";
+	echo "<div class='alert2' style='text-align:center;'>
+  <span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span>  All fields are required! </div>";
 }
 }
 ?>
@@ -107,6 +167,9 @@ if(!empty($_POST['bname']) && !empty($_POST['bid']) )
 			<div class="col2">
 				<br><br>
 				<a href="admin.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Home</b></a><br><br>
+
+				<br><br>
+				<a href="admin.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Back</b></a><br><br>
 				
 			</div>
 				<div class="col3">
@@ -128,3 +191,4 @@ if(!empty($_POST['bname']) && !empty($_POST['bid']) )
 
 </body>
 </html>
+<?php } ?>

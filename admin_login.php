@@ -1,11 +1,55 @@
+<?php 
+session_start();
+if(isset($_SESSION["sess_user"])){
+	header("location:faculty/faculty.php");
+}
+else if(isset($_SESSION["sess_user_s"])){
+	header("location:student/student.php");
+}
+else if(isset($_SESSION["sess_user_a"])){
+	echo "You are already logged in as ".$_SESSION['sess_user_a'];
+          header("Refresh:2;url=admin.php");
+	
+}
+else
+{ 
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Admin Login</title>
-	
-	
-	<link rel="stylesheet" type="text/css" href="screen.css"/>
+	<link rel="stylesheet" type="text/css" href="screen.css">
+	<link rel="stylesheet" type="text/css" href="screen5.css">
 </head>
+
+<style>
+
+.alert {
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+}
+.alert2 {
+    padding: 20px;
+    background-color: red;
+    color: white;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
+</style>
 <body>
 
 <div id="header">
@@ -33,28 +77,30 @@
 			</tr>
 
 			<tr>
-				<td>&nbsp;</td>
+				
 				<td><input type="submit" name="submit" value="Login"></td>
+				<td><input type="submit" name="forgotPassword" value="Forgot Passsword"></td>
 			</tr><br><br><br>
 		</table>
 	<br><br><br>
 </form><br><br>
 
 <?php
+if(isset($_POST["forgotPassword"])){
+	header("Location:forgotpassword.php");
+}
 if(isset($_POST["submit"])){
 
 if(!empty($_POST['adusername']) && !empty($_POST['adpassword'])) {
 	$user=$_POST['adusername'];
 	$pass=$_POST['adpassword'];
 
-	$con=mysql_connect('localhost','root','') or die(mysql_error());
-	mysql_select_db('library') or die("cannot select DB");
-
-	$query=mysql_query("SELECT * FROM admin WHERE Email='".$user."' AND Password='".$pass."'");
-	$numrows=mysql_num_rows($query);
+	$con=mysqli_connect("localhost","root","","library");
+	$query=mysqli_query($con,"SELECT * FROM admin WHERE Email='".$user."' AND Password='".$pass."'");
+	$numrows=mysqli_num_rows($query);
 	if($numrows!=0)
 	{
-	while($row=mysql_fetch_assoc($query))
+	while($row=mysqli_fetch_assoc($query))
 	{
 	$dbusername=$row['Email'];
 	$dbpassword=$row['Password'];
@@ -64,22 +110,32 @@ if(!empty($_POST['adusername']) && !empty($_POST['adpassword'])) {
 	if($user == $dbusername && $pass == $dbpassword)
 	{
 	session_start();
-	$_SESSION['sess_user']=$Name;
+	$_SESSION['sess_user_a']=$Name;
 
 
 	/* Redirect browser */
 	header("Location: admin.php");
 	}
 	} else {
-	echo "Invalid username or password!";
+	echo "<div class='alert2' style='text-align:center;'>
+  <span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span> Invalid username or password!</div>";
 	}
 
 } else {
-	echo "All fields are required!";
+	echo  "<div class='alert2' style='text-align:center;'>
+  <span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span> All fields are required!</div>";
 }
 }
 ?>
 
+
+			</div>
+
+			<div class="col2">
+			<br><br>
+				<a href="index.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Home</b></a><br><br>
+
+			
 
 			</div>
 
@@ -99,3 +155,4 @@ if(!empty($_POST['adusername']) && !empty($_POST['adpassword'])) {
 
 </body>
 </html>
+<?php } ?>

@@ -1,3 +1,16 @@
+<?php 
+session_start();
+if(isset($_SESSION["sess_user_a"]))
+{
+	header("location:admin.php");
+} else if(isset($_SESSION["sess_user_s"])){
+	header("location:student/student.php");
+} else
+if(isset($_SESSION["sess_user"]))
+{
+	header("location:faculty/faculty.php");
+} else {
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,9 +36,11 @@
 					<br><br><br>
 					<a href="check.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Admin Registration</b></a><br><br>
 
-					<a href="student_reg.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Student Registration</b></a><br><br>
+					<a href="student/student_reg.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Student Registration</b></a><br><br>
 
-					<a href="faculty_reg.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Faculty Registration</b></a><br><br>
+					<a href="faculty/faculty_reg.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Faculty Registration</b></a><br><br>
+					<a href="index.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Back</a><br><br>
+					
 					
 			</div>
 		</div>
@@ -39,3 +54,4 @@
 
 </body>
 </html>
+<?php } ?>
