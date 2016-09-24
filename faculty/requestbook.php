@@ -1,10 +1,17 @@
 
 <?php 
 session_start();
-if(!isset($_SESSION["sess_user"])){
-	header("Location:faculty_login.php");
-} else 
-{
+if(isset($_SESSION["sess_user_s"])){
+	header("location:../student/student.php");
+}
+else if(isset($_SESSION["sess_user_a"])){
+	header("location:../admin.php");
+}
+else if(isset($_SESSION["sess_user"])){
+	header("location:faculty_login.php");
+}
+else
+{ 
 ?>
 <html>
 <head>

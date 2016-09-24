@@ -1,12 +1,40 @@
 <?php 
 session_start();
-if(!isset($_SESSION["sess_user"]))
-{
+if(isset($_SESSION["sess_user_s"])){
+	header("location:../student/student.php");
+}
+else if(isset($_SESSION["sess_user_a"])){
+	header("location:../admin.php");
+}
+else if(!isset($_SESSION["sess_user"])){
 	header("location:faculty_login.php");
-}else{
+}
+else
+{ 
 ?>
 <html>
-<link rel="stylesheet" type="text/css" href="screenf.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="screenf.css" >
+<style>
+.alert {
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+}
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 28px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
+</style>
 
 <body>
 <div id="header">
@@ -34,37 +62,42 @@ if(!isset($_SESSION["sess_user"]))
 	}
 </script>
 
-<div class="vertical">
+<div style="border:1px solid black;">
 <h2><a href="../logout.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; ">Logout</a></h2><br>
 <h2><a href="faculty.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; ">Back</a></h2><br></div>
 <form action="" method="post" class="form"><pre>
-Book Name :<input type="text" name="BookName" placeholder="Book Name">	<button type="text" name="submit">Submit</button>
+Book Name :<input type="text" name="BookName" placeholder="Book Name">	<button type="text" name="submit">Submit</button><br><br>
 <?php
 if(isset($_POST["submit"]))
 {
 	if(!empty($_POST['BookName']))
 	{
 		$bookname=$_POST['BookName'];
-		$con=mysql_connect('localhost','root','');
-		mysql_select_db('library')or die('cannot create db');
-		$query=mysql_query("SELECT * FROM book WHERE Bname='".$bookname."'");
-		$numrows=mysql_num_rows($query);
+		$con=mysqli_connect("localhost","root","","library");
+		$query=mysqli_query($con,"SELECT * FROM book WHERE Bname='".$bookname."'");
+		$numrows=mysqli_num_rows($query);
 
 		if($numrows!=0)
 		{
-			while($row=mysql_fetch_array($query))
+			while($row=mysqli_fetch_array($query))
 			{
 
 				$dbbookname=$row['Bname'];
 				if(strcasecmp($dbbookname,$bookname)==0)
 				{
 				echo "Availability ".$row['Availability'];
+				if(strcasecmp($row['Availability'],'yes')==0)
+				{
+					echo " , No of books: ".$row['No_of_books'];
+				}
 				}
 			}
 		}
 		else
 		{
-			echo "No Book Exist";
+			echo "<p class='alert' style='text-align:center;'>
+  			<span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span> 
+  			<strong>No Book</strong></p>";
 		}
 	}
 	else

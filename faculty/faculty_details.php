@@ -1,15 +1,22 @@
 <?php 
 session_start();
-if(!isset($_SESSION["sess_user"]))
-{
+if(isset($_SESSION["sess_user_s"])){
+	header("location:../student/student.php");
+}
+else if(isset($_SESSION["sess_user_a"])){
+	header("location:../admin.php");
+}
+else if(!isset($_SESSION["sess_user"])){
 	header("location:faculty_login.php");
-} else {
+}
+else
+{ 
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Member login</title>
+	<title>Faculty Details</title>
 	
 	
 	<link rel="stylesheet" type="text/css" href="screenf.css" media="screen" />
@@ -29,14 +36,12 @@ if(!isset($_SESSION["sess_user"]))
 					<br><br>
 				
 <?php
-$con=mysql_connect('localhost','root','') or die(mysql_error());
-	mysql_select_db('library') or die("cannot select DB");
-	
+$con=mysqli_connect("localhost","root","","library");
 	$mid=$_SESSION['mid'];
 	
 
-$result = mysql_query("SELECT * FROM facultydetails WHERE facultyNo='".$mid."'");
-while($row = mysql_fetch_array($result))
+$result = mysqli_query($con,"SELECT * FROM facultydetails WHERE facultyNo='".$mid."'");
+while($row = mysqli_fetch_array($result))
 {
  
 ?>

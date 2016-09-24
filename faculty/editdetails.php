@@ -1,8 +1,16 @@
-<?php session_start();
-if(!isset($_SESSION['sess_user']))
-header("location:faculty_login.php");
+<?php 
+session_start();
+if(isset($_SESSION["sess_user_s"])){
+	header("location:../student/student.php");
+}
+else if(isset($_SESSION["sess_user_a"])){
+	header("location:../admin.php");
+}
+else if(!isset($_SESSION["sess_user"])){
+	header("location:faculty_login.php");
+}
 else
-{
+{ 
 ?>
 <!DOCTYPE html>
 <html>
@@ -26,14 +34,125 @@ else
 					<br><br>
 				
 <?php
-$con=mysql_connect('localhost','root','') or die(mysql_error());
-	mysql_select_db('library') or die("cannot select DB");
+$con=mysqli_connect("localhost","root","","library");
 	
 	$mid=$_SESSION['mid'];
+
+	$nameEr=$passwordEr=$addressEr=$emailEr=$departmentEr="";
+	$name=$password=$department=$email="";
+	$contact_no=$year=$address="";
+	$contact_noEr=$yearEr="";
+
+if(isset($_POST["submit"])){
+
+if(!empty($_POST['name']) && !empty($_POST['email']) && !empty($_POST['department']) && !empty($_POST['year'])&& !empty($_POST['contactno']) && !empty($_POST['address'])) 
+{
+	
+	$name=$_POST['name'];
+	$email=$_POST['email'];
+	$department=$_POST['department'];
+	$year=$_POST['year'];
+	$contact_no=$_POST['contactno'];
+	$address=$_POST['address'];
+	
+	
+		if(empty($_POST["name"]))
+		{
+			$nameEr="Name Required";
+		}
+		else
+		{
+			$name=trim($name);
+			$name=stripcslashes($name);
+			$name=htmlspecialchars($name);
+			$name=($_POST['name']);
+			
+			if (!preg_match("/^[a-zA-Z ]*$/",$name))
+			{
+			    $nameEr = "Only letters and white space allowed"; 
+			}
+		}
+		if(empty($_POST["department"]))
+		{
+			$departmentEr="Department Required";
+	
+		}
+		else
+		{
+			$department=$_POST['department'];
+		}
+		if(empty($_POST["year"]))
+		{
+			$yearEr="Year Required";
+		}
+		else
+		{
+			$year=$_POST['year'];
+			if($year>4||$year<0)
+			{
+				$yearEr="Invalid Year";
+			}
+		}
+		if(empty($_POST["address"]))
+		{
+			$addressEr="Address Required";
+		}
+		else
+		{
+			$address=trim($address);
+			$address=stripcslashes($address);
+			$address=htmlspecialchars($address);
+			$address=$_POST['address'];
+			
+			
+		}
+		if(empty($_POST["contactno"]))
+		{
+			$contact_noEr="Contact Required";
+		}
+		else
+		{
+			$contact_no=$_POST['contactno'];
+			if(strlen($contact_no)>10)
+			{
+				$contact_noEr="Should be of 10 digits";
+			}
+			else if(strlen($contact_no)<10)
+			{
+				$contact_noEr="Should be of 10 digits";
+			}
+			
+		}
+		if(empty($_POST["email"]))
+		{
+			$emailEr="Cannot Left Blank";
+		}
+		else
+		{
+			$email=$_POST['email'];
+			if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+			{
+     			$emailEr = "Invalid email format"; 
+    		}
+		}
+		
+		if($nameEr==""&&$addressEr==""&&$emailEr==""&&$departmentEr==""&&$contact_noEr==""&&$yearEr=="")
+		{
+	
+			$query=mysqli_query($con,"UPDATE facultydetails SET name = '$name', email = '$email',  department= '$department', year = '$year', contactNo = '$contact_no', address = '$address' WHERE facultyNo = '$mid'");
+			$_SESSION['sess_user']=$name;
+			header("location:faculty_details.php");	
+		}
+
+}
+
+}
 	
 
-$result = mysql_query("SELECT * FROM facultydetails WHERE facultyNo='".$mid."'");
-while($row = mysql_fetch_array($result))
+	
+
+$result = mysqli_query($con,"SELECT * FROM facultydetails WHERE facultyNo='".$mid."'");
+while($row = mysqli_fetch_array($result))
 {
  
 ?>
@@ -47,33 +166,51 @@ while($row = mysql_fetch_array($result))
 <tr>
 <td width="78"><B>Name</B></td>
 <td width="6">:</td>
-<td width="294"><input name="name" type="text" value="<?php echo $row['name'];?>"></td>
+<td width="294"><input name="name" type="text" value="<?php echo $row['name'];?>" required><span class="error">*<?php echo $nameEr;?></span></td>
 </tr>
 <tr>
 <td width="78"><B>Email</B></td>
 <td width="6">:</td>
-<td width="294"><input name="email" type="text" value="<?php echo $row['email'];?>"></td>
+<td width="294"><input name="email" type="text" value="<?php echo $row['email'];?>" required><span class="error">*<?php echo $emailEr;?></span></td>
 </tr>
 
 <tr>
 <td><B>Department</B></td>
 <td>:</td>
-<td><input name="department" type="text" value="<?php echo $row['department'];?>"></td>
+<td><select name="department">
+	
+    <option value="IT">IT</option>
+    <option value="CS">CS</option>
+    <option value="ME">ME</option>
+    <option value="EN">EN</option>
+    <option value="EC">EC</option>
+    <option value="EI">EI</option>
+    
+    </select>
+    <span class="error">*<?php echo $departmentEr;?></span>
+ </td>
 </tr>
 <tr>
 <td><B>Year</B></td>
 <td>:</td>
-<td><input name="year" type="text" value="<?php echo $row['year'];?>"></td>
+<td><select name="year">
+	<option value="1">1</option>
+	<option value="2">2</option>
+	<option value="3">3</option>
+	<option value="4">4</option>
+</select>
+<span class="error">*<?php echo $yearEr;?></span>
+</td>
 </tr>
 <tr>
 <td width="78"><B>Contact no</B></td>
 <td width="6">:</td>
-<td width="294"><input name="contactno" type="text" value="<?php echo $row['contactNo'];?>"></td>
+<td width="294"><input name="contactno" type="tel" value="<?php echo $row['contactNo'];?>" required><span class="error">*<?php echo $contact_noEr; ?></span></td>
 </tr>
 <tr>
 <td width="78"><B>Address</B></td>
 <td width="6">:</td>
-<td width="294"><input name="address" type="text" value="<?php echo $row['address'];?>"></input></td>
+<td width="294"><input name="address" type="text" value="<?php echo $row['address'];?>" required><span class="error">*<?php echo $addressEr;?><br></span></input></td>
 </tr>
 <tr>
 <td>&nbsp;</td>
@@ -85,29 +222,7 @@ while($row = mysql_fetch_array($result))
 </table>
 </td>
 </form>
-<?php 
 
-if(isset($_POST["submit"])){
-
-if(!empty($_POST['name']) && !empty($_POST['password']) && !empty($_POST['email']) && !empty($_POST['department']) && !empty($_POST['year'])&& !empty($_POST['contactno']) && !empty($_POST['address'])) 
-{
-	$name=$_POST['name'];
-	$email=$_POST['email'];
-	
-	$department=$_POST['department'];
-	$year=$_POST['year'];
-	$contact=$_POST['contactno'];
-	$address=$_POST['address'];
-	
-
-	$con=mysql_connect('localhost','root','') or die(mysql_error());
-	mysql_select_db('library') or die("cannot select DB");
-	$query=mysql_query("UPDATE facultydetails SET name = '$name', email = '$email',  department= '$department', year = '$year', contactNo = '$contact', address = '$address' WHERE facultyNo = '$mid'");
-header("location:faculty_details.php");	
-}
-}
-	
-?>
 </tr>
 </table><br><br><br><br><br><br><br>	
 				

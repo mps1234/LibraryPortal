@@ -1,3 +1,17 @@
+<?php 
+session_start();
+if(isset($_SESSION["sess_user_s"])){
+	header("location:../student/student.php");
+}
+else if(isset($_SESSION["sess_user_a"])){
+	header("location:../admin.php");
+}
+else if(isset($_SESSION["sess_user"])){
+	header("location:faculty.php");
+}
+else
+{ 
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,6 +20,28 @@
 	
 	<link rel="stylesheet" type="text/css" href="screenf.css" media="screen" />
 </head>
+<style>
+.alert {
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+}
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
+</style>
+
 <body>
 
 <div id="header">
@@ -23,10 +59,14 @@
 		}
 		else
 		{
-			$name=input($_POST['name']);
+			$name=trim($name);
+			$name=stripcslashes($name);
+			$name=htmlspecialchars($name);
+			$name=($_POST['name']);
+			
 			if (!preg_match("/^[a-zA-Z ]*$/",$name))
 			{
-			    $nameErr = "Only letters and white space allowed"; 
+			    $nameEr = "Only letters and white space allowed"; 
 			}
 		}
 		if(empty($_POST["department"]))
@@ -56,7 +96,12 @@
 		}
 		else
 		{
+			$address=trim($address);
+			$address=stripcslashes($address);
+			$address=htmlspecialchars($address);
+			
 			$address=$_POST['address'];
+			
 		}
 		if(empty($_POST["password"]))
 		{
@@ -115,28 +160,25 @@
 		}
 		if($nameEr==""&&$passwordEr==""&&$addressEr==""&&$emailEr==""&&$departmentEr==""&&$contact_noEr==""&&$faculty_noEr==""&&$yearEr=="")
 		{
+			$password=md5($password);
 		
 			$conn = mysqli_connect("localhost","root","","library")or die(mysql_error());
 			$sql = "INSERT INTO facultydetails(name,password,department,year,email,facultyNo,contactNo,address) VALUES('$name','$password','$department','$year','$email','$faculty_no','$contact_no','$address')";
 			if(mysqli_query($conn,$sql))
 		{
 			
-			header("location:../index.php");
+			header("location:faculty_login.php");
 		}
 		else
-			echo "Error".mysqli_error($conn);
+			echo "<div class='alert' style='text-align:center;'>
+  			<span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span> 
+  			<strong>Error Duplicate Faculty ID or Enmail</strong></div>";
 			
 		}
 
 			
 		}
-		function input($data)
-		{
-			$data=trim($data);
-			$data=stripslashes($data);
-			$data=htmlspecialchars($data);
-			return $data;
-		}
+		
 		?>
 
 	
@@ -152,7 +194,7 @@
 	<table width="300" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#CCCCCC">
 <tr>
 
-<form name="form1" method="post" action="">
+<form name="form1" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 
 <td>
 <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#FFFFFF" >
@@ -180,12 +222,28 @@
 <tr>
 <td><B>Department</B></td>
 <td>:</td>
-<td><input name="department" type="text" placeholder="Department"><span class="error">*<?php echo $departmentEr;?></span></td>
+<td><select name="department">
+	<option value=""></option>
+    <option value="IT">IT</option>
+    <option value="CS">CS</option>
+    <option value="ME">ME</option>
+    <option value="EN">EN</option>
+    <option value="EC">EC</option>
+    <option value="EI">EI</option>
+    
+    </select>
+  <span class="error">*<?php echo $departmentEr;?></span></td>
 </tr>
 <tr>
 <td><B>Year</B></td>
 <td>:</td>
-<td><input name="year" type="number" placeholder="Year"><span class="error">*<?php echo $yearEr;?><br></span></td>
+<td><select name="year">
+	<option value=""></option>
+	<option value="1">1</option>
+	<option value="2">2</option>
+	<option value="3">3</option>
+	<option value="4">4</option>
+</select><span class="error">*<?php echo $yearEr;?></span></td>
 </tr>
 <tr>
 <td width="78"><B>Contact no</B></td>
@@ -219,7 +277,8 @@
 			</div>
 			<div class="col2">
 			<br><br><br>
-			<h2><a href="../index.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; ">Index Page</a></h2><br>
+			<br><a href="faculty_login.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Faculty Login</b><br>
+			<h2><a href="../index.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; ">Home Page</a></h2>
 			<h2><a href="../registration.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; ">Back</a></h2><br>		
 			</div>
 			<div class="col3">
@@ -243,3 +302,4 @@
 
 </body>
 </html>
+<?php } ?>

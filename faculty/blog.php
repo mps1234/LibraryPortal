@@ -1,13 +1,20 @@
 <?php 
 session_start();
-if(!isset($_SESSION["sess_user"]))
-{
+if(isset($_SESSION["sess_user_s"])){
+	header("location:../student/student.php");
+}
+else if(isset($_SESSION["sess_user_a"])){
+	header("location:../admin.php");
+}
+else if(!isset($_SESSION["sess_user"])){
 	header("location:faculty_login.php");
-} else {
+}
+else
+{ 
 ?>
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="screenf.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="screenf.css">
 
 <title>Book Recommendation And Research Paper</title>
 </head>
@@ -51,13 +58,12 @@ if(!isset($_SESSION["sess_user"]))
 <div style="float:left;width:45%;height:60%;border:1px solid black;overflow:scroll;margin-top:2%;background-color:#F4A460;">
 
 <?php
-	$con=mysql_connect('localhost','root','') or die(mysql_error());
-	mysql_select_db('library') or die("cannot select DB");
+	$con=mysqli_connect("localhost","root","","library") or die(mysqli_error());
 	$_SESSION['count']=0;
 	$avail="yes";
 
-	$result = mysql_query("SELECT * FROM book WHERE Availability='".$avail."'");
-	while($row = mysql_fetch_array($result))
+	$result = mysqli_query($con,"SELECT * FROM book WHERE Availability='".$avail."'");
+	while($row = mysqli_fetch_array($result))
 	{ $_SESSION['Bid']=$row['Bid'];
 ?>	
 	<?php if($_SESSION['count']==0) { ?>

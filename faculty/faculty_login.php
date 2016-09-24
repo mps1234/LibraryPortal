@@ -1,3 +1,17 @@
+<?php 
+session_start();
+if(isset($_SESSION["sess_user_s"])){
+	header("location:../student/student.php");
+}
+else if(isset($_SESSION["sess_user_a"])){
+	header("location:../admin.php");
+}
+else if(isset($_SESSION["sess_user"])){
+	header("location:faculty.php");
+}
+else
+{ 
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,23 +64,22 @@ if(isset($_POST["submit"])){
 
 if(!empty($_POST['memusername']) && !empty($_POST['mempassword'])) {
 	$user=$_POST['memusername'];
-	$pass=$_POST['mempassword'];
+	$pass=md5($_POST['mempassword']);
+	 
+	$con=mysqli_connect("localhost","root","","library");
 
-	$con=mysql_connect('localhost','root','') or die(mysql_error());
-	mysql_select_db('library') or die("cannot select DB");
-
-	$query=mysql_query("SELECT * FROM facultydetails WHERE facultyNo='".$user."' AND password='".$pass."'");
-	$numrows=mysql_num_rows($query);
+	$query=mysqli_query($con,"SELECT * FROM facultydetails WHERE facultyNo='".$user."' AND password='".$pass."'");
+	$numrows=mysqli_num_rows($query);
 	if($numrows!=0)
 	{
-	while($row=mysql_fetch_assoc($query))
+	while($row=mysqli_fetch_assoc($query))
 	{
 	$dbuser=$row['name'];
 	$dbusername=$row['facultyNo'];
 	$dbpassword=$row['password'];
 	}
 
-	if($user == $dbusername && $pass == $dbpassword)
+	if(strcasecmp($user, $dbusername)==0 && strcmp($dbpassword, $pass)==0)
 	{
 	session_start();
 	$_SESSION['sess_user']=$dbuser;
@@ -108,3 +121,4 @@ if(!empty($_POST['memusername']) && !empty($_POST['mempassword'])) {
 </div>
 </body>
 </html>
+<?php } ?>s
