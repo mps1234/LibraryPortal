@@ -1,17 +1,4 @@
-<?php 
-session_start();
-if(isset($_SESSION["sess_user"])){
-	header("location:faculty/faculty.php");
-}
-else if(isset($_SESSION["sess_user_s"])){
-	header("location:student/student.php");
-}
-else if(!isset($_SESSION["sess_user_a"])){
-	header("location:admin_login.php");
-}
-else
-{ 
-?>
+
 <html>
 <head>
 	<title>FORGOT PASSWORD</title>
@@ -40,62 +27,65 @@ else
 if(isset($_POST['submit']))
 {
 	$email=$_POST['email'];
-	$con=mysql_connect('localhost','root','') or die(mysql_error());
-	mysql_select_db('library') or die("cannot select DB");
-	$query=mysql_query("SELECT Email,Password FROM admin WHERE Email='".$email."'");
-	$row=mysql_fetch_assoc($query);
-
-	if($query==FALSE)
-	{
-		echo"invalid email id";
-		header("Refresh: 5; url=admin_login.php");
- 
-	}
-	else{
-		$password = $row['Password'];
-		$email= $row['Email'];
-		require 'PHPmail/PHPMailerAutoload.php';
-
-require 'PHPmail/class.phpmailer.php'; // path to the PHPMailer class
-require 'PHPmail/class.smtp.php';
-
-$mail = new PHPMailer;
-
-//$mail->SMTPDebug = 3;    
-
-$mail->isSMTP();                                      // Set mailer to use SMTP
-$mail->Host = 'Smtp.gmail.com;Smtp.live.com';  // Specify main and backup SMTP servers
-$mail->SMTPAuth = true;                               // Enable SMTP authentication
-$mail->Username = 'mayur.pathak52@gmail.com';                 // SMTP username
-$mail->Password = 'may_ur123gmail#';                           // SMTP password
-$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-$mail->Port = 587;                                    // TCP port to connect to
-
-$mail->setFrom('mayur.pathak52@gmail.com', 'mayur');    // Add a recipient
-$mail->addAddress($email);  
-$mail->isHTML(true);                                  // Set email format to HTML
-$mail->Subject = 'Subject';
-$mail->Body    = "Your password is " . $password;
-$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-
-if(!$mail->send()) {
-    echo 'Message could not be sent.';
-    
-} else {
-    echo 'Message has been sent';
-	header("Refresh: 2; url=admin_login.php");
-	}
-	}
+	$con=mysqli_connect('localhost','root','','library') or die(mysql_error());
 	
+	$query=mysqli_query($con,"SELECT Email,Password FROM admin WHERE Email='".$email."'");
+	
+if(mysqli_num_rows($query)==1)
+  {
+    while($row=mysqli_fetch_array($query))
+    {
+      $email1=md5($row['Email']);
+	  $email=$row['Email'];
+      $pass=md5($row['Password']);
+    }
+    $link="<a href='localhost/Latest%20library/reset.php?key=".$email1."&reset=".$pass."'>Click To Reset password</a>";
+    
+    
+    require 'PHPmail/PHPMailerAutoload.php';
+		require 'PHPmail/class.phpmailer.php'; // path to the PHPMailer class
+		require 'PHPmail/class.smtp.php';
+
+		$mail = new PHPMailer;
+
+		//$mail->SMTPDebug = 3;    
+
+		$mail->isSMTP();                                      // Set mailer to use SMTP
+		$mail->Host = 'Smtp.gmail.com;Smtp.live.com';  // Specify main and backup SMTP servers
+		$mail->SMTPAuth = true;                               // Enable SMTP authentication
+		$mail->Username = 'mayur.pathak52@gmail.com';                 // SMTP username
+		$mail->Password = 'may_ur123gmail#';                           // SMTP password
+		$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+		$mail->Port = 587;                                    // TCP port to connect to
+
+		$mail->setFrom('mayur.pathak52@gmail.com', 'mayur');    // Add a recipient
+		$mail->addAddress($email);  
+		$mail->isHTML(true);                                  // Set email format to HTML
+		$mail->Subject = 'Subject';
+		$mail->Body    = 'Click On This Link to Reset Password '.$link.'';
+		$mail->AltBody = 'reset link';
+
+		if(!$mail->send())
+			{
+			 echo "Mail Error - >".$mail->ErrorInfo;
+    }
+			else 
+			{
+			echo 'Message has been sent';
+			header("Refresh: 2; url=admin_login.php");
+			}
+			}
+
 }
-	?>
+?>
+	
 				<br><br><br><br><br><br>
 				<!-- Column 1 end -->
 			</div>
 			<div class="col2">
 				<!-- Column 2 start -->
 					<br><br>
-					<a href="student_login.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Login</b></a><br><br>
+					<a href="admin_login.php" style="font-size:25px; background-color:transparent;text-decoration:none; color:#369; "><b>Login</b></a><br><br>
 				<!-- Column 2 end -->
 			</div>
 			<div class="col3">
@@ -109,10 +99,10 @@ if(!$mail->send()) {
 </div>
 <div id="footer">
 	
-	
+	<p>&copy; Online Library Portal</p>
+	<p><a href="#">Mayur Pathak, Nakshatra Pradhan & Akshat Srivastava</a></p>
 	
 </div>
 
 </body>
 </html>
-<?php }?>

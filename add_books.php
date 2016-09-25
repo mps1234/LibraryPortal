@@ -49,6 +49,12 @@ else
 </style>
 <body>
 
+	
+
+
+
+
+
 		<div id="header">
 				<img src="logo.png" name="logo" style="width: 100%; height: 150px;"/>
 				<p id="layoutdims"><h1 style="text-align: center">Welcome to Online Library Management System</h1></p>

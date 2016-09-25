@@ -91,16 +91,6 @@ else
 				$password=$_POST['password'];
 			}
 			
-			
-			/*if(empty($_POST['contact']))
-			{
-				$contact_noEr="Required Field";
-			}
-			
-			else
-			{   
-				$contact_no=$_POST['contact'];
-			}*/
 
 if(empty($_POST["contact"]))
 			{
@@ -196,7 +186,7 @@ if(empty($_POST["contact"]))
 				
 				<tr>
 						<td>Contact No. :</td>
-						<td><input type="tel" name="contact" class="textInput" value="<?php echo $contact_no;?>"></td>
+						<td><input type="number" name="contact" class="textInput" value="<?php echo $contact_no;?>"></td>
 						<td><span class="error">*<?php echo $contact_noEr; ?></span></td>
 				</tr>
 

@@ -86,14 +86,14 @@ else
 </form><br><br>
 
 <?php
-if(isset($_POST["forgotPassword"])){
-	header("Location:forgotpassword.php");
-}
+if(isset($_POST["forgotPassword"]))
+	header("Location:forgotPassword.php");
+
 if(isset($_POST["submit"])){
 
 if(!empty($_POST['adusername']) && !empty($_POST['adpassword'])) {
 	$user=$_POST['adusername'];
-	$pass=$_POST['adpassword'];
+	$pass=md5($_POST['adpassword']);
 
 	$con=mysqli_connect("localhost","root","","library");
 	$query=mysqli_query($con,"SELECT * FROM admin WHERE Email='".$user."' AND Password='".$pass."'");
