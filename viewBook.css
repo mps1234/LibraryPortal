@@ -1,0 +1,28 @@
+#myTable {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#myTable td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+#myTable tr:nth-child(even) {
+    background-color: #dddddd;
+}
+	#myInput {
+  width: 80%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+#myTable{
+	border-collapse:collapse;
+	width:90%;
+	border: 1px solid #ddd;
+	   font-size: 16px;
+}
